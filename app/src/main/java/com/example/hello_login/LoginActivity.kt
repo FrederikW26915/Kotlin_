@@ -38,9 +38,6 @@ class LoginActivity : AppCompatActivity() {
 
     /** Called when the user taps the Login button */
 
-
-
-
     // view?
     fun sendMessage(view: View) {
 
@@ -71,8 +68,8 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    var message = ""
-    var failed = true
+    private var message = ""
+    private var failed = true
 
     private fun goToMainHelper(token: String){
         this.message = token
