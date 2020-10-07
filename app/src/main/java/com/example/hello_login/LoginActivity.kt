@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.awaitAll
+import okhttp3.internal.wait
 
 //import com.example.hello_login.spinner as spinner
 
@@ -52,8 +53,9 @@ class LoginActivity : AppCompatActivity() {
 
 
         try {
+
             Network.login(emailString,passString,
-                {token -> goToMainHelper(token)},
+                {reply -> goToMainHelper(reply)},
                 {error -> errorHelper(error)})
 
             if(failed){
@@ -65,14 +67,13 @@ class LoginActivity : AppCompatActivity() {
         catch (e: Exception) {
             e.message?.let { errorMessage(it) }
         }
-
     }
 
     private var message = ""
     private var failed = true
 
-    private fun goToMainHelper(token: String){
-        this.message = token
+    private fun goToMainHelper(string: String){
+        this.message = string
         this.failed = false
     }
 
@@ -81,9 +82,9 @@ class LoginActivity : AppCompatActivity() {
         this.failed = true
     }
 
-    private fun goToMain(token: String){
+    private fun goToMain(string: String){
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, token)
+            putExtra(EXTRA_MESSAGE, string)
         }
 
         resetInput()

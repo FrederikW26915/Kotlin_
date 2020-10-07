@@ -1,26 +1,11 @@
 package com.example.hello_login
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.RequestBody
-import okhttp3.Request
 import okhttp3.OkHttpClient
-import okhttp3.OkHttpClient.Companion
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import retrofit2.Call
-import retrofit2.http.GET
 import retrofit2.http.Query
-import androidx.appcompat.app.AppCompatActivity
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.http.POST
 import java.security.SecureRandom
 import java.security.cert.CertificateException
@@ -35,22 +20,22 @@ data class Payload(
 )
 
 data class User(
-    @SerializedName("id") val id: String?,
-    @SerializedName("group_id") val group_id: String?,
-    @SerializedName("name") val name: String?,
-    @SerializedName("created_at") val created_at: String?,
-    @SerializedName("updated_at") val updated_at: String?
+    @SerializedName("id") val id: String? = null,
+    @SerializedName("group_id") val group_id: String? = null,
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("created_at") val created_at: String? = null,
+    @SerializedName("updated_at") val updated_at: String? = null
 )
 
 data class Data(
-    @SerializedName("token") val token: String?,
-    @SerializedName("user") val user: User?
+    @SerializedName("token") val token: String? = null,
+    @SerializedName("user") val user: User? = null
 )
 
 data class Reply(
-    @SerializedName("success") val success: Boolean,
-    @SerializedName("data") val data: Data?,
-    @SerializedName("messages") val messages: List<String?>
+    @SerializedName("success") val success: Boolean? = null,
+    @SerializedName("data") val data: Data? = null,
+    @SerializedName("messages") val messages: List<String?>? = null
 )
 
 interface PayloadService{
@@ -59,9 +44,7 @@ interface PayloadService{
 }
 
 object ServiceBuilder {
-    private val client by lazy {
-
-
+    val client by lazy {
 
         // Create a trust manager that does not validate certificate chains
         val trustAllCerts: Array<TrustManager> = arrayOf<TrustManager>(
@@ -109,17 +92,5 @@ object ServiceBuilder {
         clientBuilder.addInterceptor(logging)
 
         clientBuilder.build()
-    }
-
-
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.tolderfonen.skat.dk/api/v1/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
-
-    fun<T> buildService(service: Class<T>): T{
-        return retrofit.create(service)
     }
 }
