@@ -55,31 +55,12 @@ class LoginActivity : AppCompatActivity() {
         try {
 
             Network.login(emailString,passString,
-                {reply -> goToMainHelper(reply)},
-                {error -> errorHelper(error)})
-
-            if(failed){
-                errorMessage(this.message)
-            } else {
-                goToMain(this.message)
-            }
+                {reply -> goToMain(reply)},
+                {error -> errorMessage(error)})
         }
         catch (e: Exception) {
             e.message?.let { errorMessage(it) }
         }
-    }
-
-    private var message = ""
-    private var failed = true
-
-    private fun goToMainHelper(string: String){
-        this.message = string
-        this.failed = false
-    }
-
-    private fun errorHelper(error: String){
-        this.message = error
-        this.failed = true
     }
 
     private fun goToMain(string: String){
@@ -87,14 +68,32 @@ class LoginActivity : AppCompatActivity() {
             putExtra(EXTRA_MESSAGE, string)
         }
 
-        resetInput()
+        // reset
+        this.spinner?.let { it.visibility = View.GONE }
+
+        this.emailText?.isEnabled = true
+        this.passText?.isEnabled = true
+        this.passText?.text = null
+        findViewById<Button>(R.id.loginButton).isEnabled = true
+
+        this.emailText?.setSelectAllOnFocus(true)
+        this.emailText?.requestFocus()
 
         startActivity(intent)
     }
 
     private fun errorMessage(error: String){
 
-        resetInput()
+        // reset
+        this.spinner?.let { it.visibility = View.GONE }
+
+        this.emailText?.isEnabled = true
+        this.passText?.isEnabled = true
+        this.passText?.text = null
+        findViewById<Button>(R.id.loginButton).isEnabled = true
+
+        this.emailText?.setSelectAllOnFocus(true)
+        this.emailText?.requestFocus()
 
         Toast.makeText(applicationContext, error, Toast.LENGTH_LONG).show()
     }
@@ -109,9 +108,6 @@ class LoginActivity : AppCompatActivity() {
 
         this.emailText?.setSelectAllOnFocus(true)
         this.emailText?.requestFocus()
-
-        this.failed = true
-        this.message = ""
     }
 }
 
