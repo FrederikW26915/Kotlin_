@@ -2,6 +2,8 @@ package com.example.hello_login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
@@ -18,4 +20,21 @@ class MainActivity : AppCompatActivity() {
             text = message
         }
     }
+
+
+    fun sendSearch(view: View){
+        try {
+            Log.e("hej","try")
+            Network.search("hej")
+        }
+        catch (e: Exception) {
+            //e.message?.let { errorMessage(it) }
+        }
+    }
+    //
+    // search builder med token og search ord
+
+    private fun update_list(){}
+
+    private fun proon_data(){}
 }

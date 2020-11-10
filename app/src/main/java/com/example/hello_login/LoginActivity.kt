@@ -2,6 +2,8 @@ package com.example.hello_login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -38,6 +40,10 @@ class LoginActivity : AppCompatActivity() {
 
 
     /** Called when the user taps the Login button */
+    protected val handler: Handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
 
     // view?
     fun sendMessage(view: View) {
@@ -52,6 +58,8 @@ class LoginActivity : AppCompatActivity() {
         val passString = this.passText?.text.toString()
 
 
+
+
         try {
 
             Network.login(emailString,passString,
@@ -64,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToMain(string: String){
+
+        handler.post {
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, string)
         }
@@ -80,10 +90,11 @@ class LoginActivity : AppCompatActivity() {
         this.emailText?.requestFocus()
 
         startActivity(intent)
-    }
+    }}
 
     private fun errorMessage(error: String){
 
+        handler.post{
         // reset
         this.spinner?.let { it.visibility = View.GONE }
 
@@ -96,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
         this.emailText?.requestFocus()
 
         Toast.makeText(applicationContext, error, Toast.LENGTH_LONG).show()
-    }
+    }}
 
     private fun resetInput(){
         this.spinner?.let { it.visibility = View.GONE }

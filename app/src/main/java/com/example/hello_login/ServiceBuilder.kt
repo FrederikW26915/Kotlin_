@@ -32,6 +32,16 @@ data class Data(
     @SerializedName("user") val user: User? = null
 )
 
+data class DataSearch(
+    @SerializedName("text") val token: String? = null
+)
+
+data class ReplySearch(
+    @SerializedName("success") val success: Boolean? = null,
+    @SerializedName("data") val data: DataSearch? = null,
+    @SerializedName("messages") val messages: List<String?>? = null
+)
+
 data class Reply(
     @SerializedName("success") val success: Boolean? = null,
     @SerializedName("data") val data: Data? = null,
@@ -42,6 +52,29 @@ interface PayloadService{
     @POST("auth/login")
     fun getReply(@Query("email") email: String, @Query("password") password: String): Call<Reply>
 }
+
+
+
+data class Phone(
+    var id : String,
+    var name : String,
+    var number: String
+)
+data class Email(
+    var id: String,
+    var email: String
+)
+data class Contact(
+    var id : String,
+    var groupId : String,
+    var name : String,
+    var organization: String,
+    var department: String,
+    var tags : String,
+    var notes : String,
+    var emails : List<Email>,
+    var phones : List<Phone>
+)
 
 object ServiceBuilder {
     val client by lazy {
@@ -90,6 +123,7 @@ object ServiceBuilder {
         val logging = okhttp3.logging.HttpLoggingInterceptor()
         logging.level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
         clientBuilder.addInterceptor(logging)
+        clientBuilder.addInterceptor(TokenInterceptor())
 
         clientBuilder.build()
     }
